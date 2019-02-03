@@ -1,4 +1,4 @@
-package textmanipulate;
+package textmanipulation;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,8 +43,10 @@ class generateC{
             addit = addit+(char)tmp;
         }
         
-       String print = "\tint a;" + "\n"
-               + "\tint b;" +"\n";
+        
+        
+        
+       String print = "printf(" + '"' + msg + '"' + ");\n" ; 
        char additara[] = new char[addit.length()+print.length()+10];
        int pos = addit.indexOf("return 0;");
        
@@ -62,7 +64,113 @@ class generateC{
        
        for(int i=0; i<finalfinal.length; i++)
        {
-           System.out.print(finalfinal[i]);
+           fout.write(finalfinal[i]);
+       }
+      
+    }
+    
+    public void addVar(String var, String type) throws FileNotFoundException, IOException
+    {
+        int tmp;
+        String addit = "";
+        fin = new FileInputStream(new File("main.c"));
+       
+        while(fin.available()!=0)
+        {
+            tmp = fin.read();
+            addit = addit+(char)tmp;
+        }
+        
+       String print = type + " " + var + ";\n";
+       char additara[] = new char[addit.length()+print.length()+10];
+       int pos = addit.indexOf("return 0;");
+       
+       for(int i=0; i<pos; i++) additara[i] = addit.charAt(i);
+       for(int i=pos,j=0; i<print.length()+pos; i++,j++) additara[i] = print.charAt(j);
+       for(int i=print.length()+pos+1,j=pos; j<addit.length(); i++,j++) additara[i] = addit.charAt(j);
+           
+       String finaladdit = "";
+       for(int i=0; i<additara.length; i++) finaladdit = finaladdit + additara[i];
+
+       char finalfinal[] = finaladdit.toCharArray();
+       
+       fout.close();
+       fout = new FileOutputStream(new File("main.c"));
+       
+       for(int i=0; i<finalfinal.length; i++)
+       {
+           fout.write(finalfinal[i]);
+       }
+      
+    }
+    
+    
+     public void assignVar(String var, String value) throws FileNotFoundException, IOException
+    {
+        int tmp;
+        String addit = "";
+        fin = new FileInputStream(new File("main.c"));
+       
+        while(fin.available()!=0)
+        {
+            tmp = fin.read();
+            addit = addit+(char)tmp;
+        }
+        
+       String print = var + " = " + value + ";\n";
+       char additara[] = new char[addit.length()+print.length()+10];
+       int pos = addit.indexOf("return 0;");
+       
+       for(int i=0; i<pos; i++) additara[i] = addit.charAt(i);
+       for(int i=pos,j=0; i<print.length()+pos; i++,j++) additara[i] = print.charAt(j);
+       for(int i=print.length()+pos+1,j=pos; j<addit.length(); i++,j++) additara[i] = addit.charAt(j);
+           
+       String finaladdit = "";
+       for(int i=0; i<additara.length; i++) finaladdit = finaladdit + additara[i];
+
+       char finalfinal[] = finaladdit.toCharArray();
+       
+       fout.close();
+       fout = new FileOutputStream(new File("main.c"));
+       
+       for(int i=0; i<finalfinal.length; i++)
+       {
+           fout.write(finalfinal[i]);
+       }
+      
+    }
+ 
+     
+      public void addOp(String op) throws FileNotFoundException, IOException
+    {
+        int tmp;
+        String addit = "";
+        fin = new FileInputStream(new File("main.c"));
+       
+        while(fin.available()!=0)
+        {
+            tmp = fin.read();
+            addit = addit+(char)tmp;
+        }
+        
+       String print = op + ";\n";
+       char additara[] = new char[addit.length()+print.length()+10];
+       int pos = addit.indexOf("return 0;");
+       
+       for(int i=0; i<pos; i++) additara[i] = addit.charAt(i);
+       for(int i=pos,j=0; i<print.length()+pos; i++,j++) additara[i] = print.charAt(j);
+       for(int i=print.length()+pos+1,j=pos; j<addit.length(); i++,j++) additara[i] = addit.charAt(j);
+           
+       String finaladdit = "";
+       for(int i=0; i<additara.length; i++) finaladdit = finaladdit + additara[i];
+
+       char finalfinal[] = finaladdit.toCharArray();
+       
+       fout.close();
+       fout = new FileOutputStream(new File("main.c"));
+       
+       for(int i=0; i<finalfinal.length; i++)
+       {
            fout.write(finalfinal[i]);
        }
       
@@ -78,17 +186,49 @@ public class TextManipulate {
         String cmd;
         generateC c = new generateC();
         
-        System.out.println("Enter Your command: ");
-        cmd = input.next();
+        System.out.println("----Enter Your command----\n");
+
+        while(true)
+        {
+          cmd = input.nextLine();
         
-        if(cmd.contains("start")){
+        if(cmd.equals("start")){
             c.startIt();
         }
         
-        cmd = input.next();
+        else if(cmd.equals("print"))
+        {
+            System.out.println("----Enter message----");
+            cmd = input.nextLine();
+            c.print(cmd);
+        }
         
-        c.print("This is a test.");
-        c.print("This is a test.");
+        else if(cmd.equals("addVar"))
+        {
+            System.out.println("----Enter var name and type----");
+            String var = input.nextLine();
+            String type = input.nextLine();
+            c.addVar(var, type);
+        }
+        
+        else if(cmd.equals("assignVar"))
+        {
+            System.out.println("----Enter var name and value----");
+            String var = input.nextLine();
+            String type = input.nextLine();
+            c.assignVar(var, type);
+        }
+        
+        else if(cmd.equals("addOp"))
+        {
+            System.out.println("----Enter Operation----");
+            String op = input.nextLine();
+
+            c.addOp(op);
+        }
+        
+        }
+        
         
         
         
